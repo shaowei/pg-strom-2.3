@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="PG-Strom Development Team">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>SQL Objects - PG-Strom Manual</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="//fonts.googleapis.com/earlyaccess/notosansjp.css" rel="stylesheet">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet">
+  <link href="../custom.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "SQL Objects";
+    var mkdocs_page_input_path = "ref_sqlfuncs.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> PG-Strom Manual</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+  [<a href="../ja/ref_sqlfuncs/" style="color: #cccccc">Japanese</a> | <strong>English</strong>]
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../install/">Install</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Tutorial</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../operations/">Basic Operations</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../sys_admin/">System Administration</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../brin/">Index Support</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../partition/">Partitioning</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../troubles/">Trouble Shooting</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Advanced Features</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../ssd2gpu/">SSD2GPU Direct SQL</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../arrow_fdw/">Arrow_fdw</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../python/">In-database Analytics</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">References</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../ref_types/">Data Types</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../ref_devfuncs/">Functions and Operators</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">SQL Objects</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#device-information">Device Information</a></li>
+    
+
+    <li class="toctree-l3"><a href="#arrow_fdw-supports">Arrow_Fdw Supports</a></li>
+    
+
+    <li class="toctree-l3"><a href="#gpu-data-frame-functions">GPU Data Frame Functions</a></li>
+    
+
+    <li class="toctree-l3"><a href="#test-data-generation">Test Data Generation</a></li>
+    
+
+    <li class="toctree-l3"><a href="#other-functions">Other Functions</a></li>
+    
+
+    <li class="toctree-l3"><a href="#system-view">System View</a></li>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../ref_params/">GUC Parameters</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../release_note/">Release Note</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">PG-Strom Manual</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>References &raquo;</li>
+        
+      
+    
+    <li>SQL Objects</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1>SQL Objects</h1>
+
+<p>This chapter introduces SQL objects additionally provided by PG-Strom.</p>
+<h1 id="device-information">Device Information</h1>
+<table>
+<thead>
+<tr>
+<th align="left">Function</th>
+<th align="center">Result</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>gpu_device_name(int = 0)</code></td>
+<td align="center"><code>text</code></td>
+<td align="left">It tells name of the specified GPU device.</td>
+</tr>
+<tr>
+<td align="left"><code>gpu_global_memsize(int = 0)</code></td>
+<td align="center"><code>bigint</code></td>
+<td align="left">It tells amount of the specified GPU device in bytes.</td>
+</tr>
+<tr>
+<td align="left"><code>gpu_max_blocksize(int = 0)</code></td>
+<td align="center"><code>int</code></td>
+<td align="left">It tells maximum block-size on the specified GPU device. 1024, in the currently supported GPU models.</td>
+</tr>
+<tr>
+<td align="left"><code>gpu_warp_size(int = 0)</code></td>
+<td align="center"><code>int</code></td>
+<td align="left">It tells warp-size on the specified GPU device. 32, in the currently supported GPU models.</td>
+</tr>
+<tr>
+<td align="left"><code>gpu_max_shared_memory_perblock(int = 0)</code></td>
+<td align="center"><code>int</code></td>
+<td align="left">It tells maximum shared memory size per block on the specified GPU device.</td>
+</tr>
+<tr>
+<td align="left"><code>gpu_num_registers_perblock(int = 0)</code></td>
+<td align="center"><code>int</code></td>
+<td align="left">It tells total number of registers per block on the specified GPU device.</td>
+</tr>
+<tr>
+<td align="left"><code>gpu_num_multiptocessors(int = 0)</code></td>
+<td align="center"><code>int</code></td>
+<td align="left">It tells number of SM(Streaming Multiprocessor) units on the specified GPU device.</td>
+</tr>
+<tr>
+<td align="left"><code>gpu_num_cuda_cores(int = 0)</code></td>
+<td align="center"><code>int</code></td>
+<td align="left">It tells number of CUDA cores on the specified GPU device.</td>
+</tr>
+<tr>
+<td align="left"><code>gpu_cc_major(int = 0)</code></td>
+<td align="center"><code>int</code></td>
+<td align="left">It tells major CC(Compute Capability) version of the specified GPU device.</td>
+</tr>
+<tr>
+<td align="left"><code>gpu_cc_minor(int = 0)</code></td>
+<td align="center"><code>int</code></td>
+<td align="left">It tells minor CC(Compute Capability) version of the specified GPU device.</td>
+</tr>
+<tr>
+<td align="left"><code>gpu_pci_id(int = 0)</code></td>
+<td align="center"><code>int</code></td>
+<td align="left">It tells PCI bus-id of the specified GPU device.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="arrow_fdw-supports">Arrow_Fdw Supports</h1>
+<table>
+<thead>
+<tr>
+<th align="left">Function</th>
+<th align="center">Result</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>pgstrom.arrow_fdw_truncate(regclass)</code></td>
+<td align="center"><code>bool</code></td>
+<td align="left">It truncates contents of the specified Arrow_Fdw foreign table. Arrow_Fdw foreign table must be <code>writable</code>.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="gpu-data-frame-functions">GPU Data Frame Functions</h1>
+<table>
+<thead>
+<tr>
+<th align="left">Function</th>
+<th align="center">Result</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>pgstrom.arrow_fdw_export_cupy(regclass, text[], int)</code></td>
+<td align="center"><code>text</code></td>
+<td align="left">It exports the specified columns of Arrow_Fdw foreign table as cuPy's data frame(<code>cupy.ndarray</code>). GPU buffer shall be released automatically on session closed.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.arrow_fdw_export_cupy_pinned(regclass, text[], int)</code></td>
+<td align="center"><code>text</code></td>
+<td align="left">It exports the specified columns of Arrow_Fdw foreign table as cuPy's data frame(<code>cupy.ndarray</code>), as pinned GPU buffer; that is available after the session closed.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.arrow_fdw_put_gpu_buffer(text)</code></td>
+<td align="center"><code>bool</code></td>
+<td align="left">It unreference the GPU buffer that is exported with the above functions.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.arrow_fdw_unpin_gpu_buffer(text)</code></td>
+<td align="center"><code>bool</code></td>
+<td align="left">It unpin the GPU buffer that is exported with the above functions.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="test-data-generation">Test Data Generation</h1>
+<table>
+<thead>
+<tr>
+<th align="left">Function</th>
+<th align="center">Result</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>pgstrom.random_setseed(int)</code></td>
+<td align="center"><code>void</code></td>
+<td align="left">It initializes the random seed.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_int(float=0.0, bigint=0, bigint=INT_MAX)</code></td>
+<td align="center"><code>bigint</code></td>
+<td align="left">It generates random data in <code>bigint</code> type within the range.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_float(float=0.0, float=0.0, float=1.0)</code></td>
+<td align="center"><code>float</code></td>
+<td align="left">It generates random data in <code>float</code> type within the range.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_date(float=0.0, date='2015-01-01', date='2025-12-31')</code></td>
+<td align="center"><code>date</code></td>
+<td align="left">It generates random data in <code>date</code> type within the range.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_time(float=0.0, time='00:00:00', time='23:59:59')</code></td>
+<td align="center"><code>time</code></td>
+<td align="left">It generates random data in <code>time</code> type within the range.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_timetz(float=0.0, time='00:00:00', time='23:59:59')</code></td>
+<td align="center"><code>timetz</code></td>
+<td align="left">It generates random data in <code>timetz</code> type within the range.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_timestamp(float=0.0, timestamp='2015-01-01', timestamp='2025-01-01')</code></td>
+<td align="center"><code>timestamp</code></td>
+<td align="left">It generates random data in <code>timestamp</code> type within the range.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_macaddr(float=0.0, macaddr='ab:cd:00:00:00', macaddr='ab:cd:ff:ff:ff:ff')</code></td>
+<td align="center"><code>macaddr</code></td>
+<td align="left">It generates random data in <code>macaddr</code> type within the range.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_inet(float=0.0, inet='192.168.0.1/16')</code></td>
+<td align="center"><code>inet</code></td>
+<td align="left">It generates random data in <code>inet</code> type within the range.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_text(float=0.0, text='test_**')</code></td>
+<td align="center"><code>text</code></td>
+<td align="left">It generates random data in <code>text</code> type. The '*' characters in 2nd argument shall be replaced randomly.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_text_len(float=0.0, int=10)</code></td>
+<td align="center"><code>text</code></td>
+<td align="left">It generates random data in <code>text</code> type within the specified length.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_int4range(float=0.0, bigint=0, bigint=INT_MAX)</code></td>
+<td align="center"><code>int4range</code></td>
+<td align="left">It generates random data in <code>int4range</code> type within the range.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_int8range(float=0.0, bigint=0, bigint=LONG_MAX)</code></td>
+<td align="center"><code>int8range</code></td>
+<td align="left">It generates random data in <code>int8range</code> type within the range.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_tsrange(float=0.0, timestamp='2015-01-01', timestamp='2025-01-01')</code></td>
+<td align="center"><code>tsrange</code></td>
+<td align="left">It generates random data in <code>tsrange</code> type within the range.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_tstzrange(float=0.0, timestamptz='2015-01-01', timestamptz='2025-01-01')</code></td>
+<td align="center"><code>tstzrange</code></td>
+<td align="left">It generates random data in <code>tstzrange</code> type within the range.</td>
+</tr>
+<tr>
+<td align="left"><code>pgstrom.random_daterange(float=0.0, date='2015-01-01', date='2025-12-31')</code></td>
+<td align="center"><code>daterange</code></td>
+<td align="left">It generates random data in <code>daterange</code> type within the range.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="other-functions">Other Functions</h1>
+<table>
+<thead>
+<tr>
+<th align="left">Function</th>
+<th align="center">Result</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>pgstrom.license_query()</code></td>
+<td align="center"><code>text</code></td>
+<td align="left">It shows the active commercial subscription.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="system-view">System View</h1>
+<p>PG-Strom provides several system view to export its internal state for users or applications.
+The future version may add extra fields here. So, it is not recommended to reference these information schemas using <code>SELECT * FROM ...</code>.</p>
+<p><strong>pgstrom.device_info</strong></p>
+<p><code>pgstrom.device_into</code> system view exports device attributes of the GPUs recognized by PG-Strom.
+GPU has different specification for each model, like number of cores, capacity of global memory, maximum number of threads and etc, user's software should be optimized according to the information if you try raw GPU programming with PL/CUDA functions.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Data Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">device_nr</td>
+<td align="left"><code>int</code></td>
+<td align="left">GPU device number</td>
+</tr>
+<tr>
+<td align="left">aindex</td>
+<td align="left"><code>int</code></td>
+<td align="left">Attribute index</td>
+</tr>
+<tr>
+<td align="left">attribute</td>
+<td align="left"><code>text</code></td>
+<td align="left">Attribute name</td>
+</tr>
+<tr>
+<td align="left">value</td>
+<td align="left"><code>text</code></td>
+<td align="left">Value of the attribute</td>
+</tr>
+</tbody>
+</table>
+<p><strong>pgstrom.device_preserved_meminfo</strong></p>
+<p><code>pgstrom.device_preserved_meminfo</code> system view exports information of the preserved device memory; which can be shared multiple PostgreSQL backend.
+Right now, only Python collaboration of Arrow_Fdw uses this feature.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Data Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">device_nr</td>
+<td align="left"><code>int</code></td>
+<td align="left">GPU device number</td>
+</tr>
+<tr>
+<td align="left">handle</td>
+<td align="left"><code>bytea</code></td>
+<td align="left">IPC handle of the preserved device memory</td>
+</tr>
+<tr>
+<td align="left">owner</td>
+<td align="left"><code>regrole</code></td>
+<td align="left">Owner of the preserved device memory</td>
+</tr>
+<tr>
+<td align="left">length</td>
+<td align="left"><code>bigint</code></td>
+<td align="left">Length of the preserved device memory in bytes</td>
+</tr>
+<tr>
+<td align="left">ctime</td>
+<td align="left"><code>timestamp with time zone</code></td>
+<td align="left">Timestamp when the preserved device memory is created</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../ref_params/" class="btn btn-neutral float-right" title="GUC Parameters">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../ref_devfuncs/" class="btn btn-neutral" title="Functions and Operators"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../ref_devfuncs/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../ref_params/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

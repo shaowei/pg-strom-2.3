@@ -1,0 +1,60 @@
+site_name: PG-Strom Manual
+site_description: PG-Strom v2.0 Official Documentation
+site_author: PG-Strom Development Team
+theme:
+    name: readthedocs
+@en{
+    custom_dir: docs/custom_en
+}
+@ja{
+    custom_dir: docs/custom_ja
+}
+nav:
+@en{
+- 'Home' : 'index.md'
+- 'Install' : 'install.md'
+- 'Tutorial' :
+    - 'Basic Operations' : 'operations.md'
+    - 'System Administration' : 'sys_admin.md'
+    - 'Index Support' : 'brin.md'
+    - 'Partitioning' : 'partition.md'
+    - 'Trouble Shooting' : 'troubles.md'
+- 'Advanced Features' :
+    - 'SSD2GPU Direct SQL' : 'ssd2gpu.md'
+    - 'Arrow_fdw' : 'arrow_fdw.md'
+    - 'In-database Analytics' : python.md
+- 'References' :
+    - 'Data Types' : 'ref_types.md'
+    - 'Functions and Operators' : 'ref_devfuncs.md'
+    - 'SQL Objects' : 'ref_sqlfuncs.md'
+    - 'GUC Parameters' : 'ref_params.md'
+- 'Release Note' : 'release_note.md'
+}
+@ja{
+- 'はじめに' : 'index.md'
+- 'インストール' : 'install.md'
+- '利用ガイド' :
+    - '基本的な操作' : 'operations.md'
+    - 'システム管理' : 'sys_admin.md'
+    - 'インデックス対応' : 'brin.md'
+    - 'パーティション' : 'partition.md'
+    - 'トラブルシューティング' : 'troubles.md'
+- '先進機能' :
+    - 'SSDtoGPUダイレクトSQL' : 'ssd2gpu.md'
+    - 'Arrow_fdw' : 'arrow_fdw.md'
+    - 'In-database Analytics' : python.md
+- 'リファレンス' :
+    - 'データ型' : 'ref_types.md'
+    - '関数と演算子' : 'ref_devfuncs.md'
+    - 'SQLオブジェクト' : 'ref_sqlfuncs.md'
+    - 'GUCパラメータ' : 'ref_params.md'
+- 'リリースノート' : 'release_note.md'
+}
+extra_css:
+    - "//fonts.googleapis.com/earlyaccess/notosansjp.css"
+    - "//fonts.googleapis.com/css?family=Open+Sans:600,800"
+    - "custom.css"
+markdown_extensions:
+    - admonition
+    - footnotes
+    - def_list
